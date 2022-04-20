@@ -17,3 +17,13 @@ services:
       command: npm run start
       depends_on:
         - db_mongo
+    ui:
+      container_name: ui
+      build: ./ui
+      ports :
+        - "3001:3001"
+      volumes:
+        - ./ui:/home/app/ui
+      command: npm run dev
+      depends_on:
+        - api

@@ -1,8 +1,9 @@
+import Products from "../../organisms/product/ProductList"
 
 
 const ProductList = () => {
     return (
-        <div>ProductList</div>
+        <Products />
     )
 }
 

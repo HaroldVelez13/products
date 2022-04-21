@@ -4,11 +4,15 @@ import bcrypt from "bcrypt-nodejs";
 export interface IUser extends Document {
   username: string;
   password: string;
+  email: string;
+  phone?: string;
 }
 
 export const userSchema: Schema = new Schema({
   username: String,
   password: String,
+  email: String,
+  phone: String,
 });
 
 

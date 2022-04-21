@@ -10,20 +10,23 @@ import { JWT_SECRET } from "../util/secrets";
 export class UserController {
 
   public async registerUser(req: Request, res: Response): Promise<void> {
-    const hashedPassword = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
+    const { username, password, email, phone } = req.body
+    const hashedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 
     await User.create({
-      username: req.body.username,
+      username: username,
+      email: email,
+      phone: phone,
       password: hashedPassword,
 
     });
 
-    const token = jwt.sign({ username: req.body.username, scope : req.body.scope }, JWT_SECRET);
+    const token = jwt.sign({ username: username, scope: req.body.scope }, JWT_SECRET);
     res.status(200).send({ token: token });
   }
 
-  public authenticateUser(req: Request, res: Response, next: NextFunction) {
-    passport.authenticate("local", function (err, user, info) {
+  public authenticateUser(_req: Request, res: Response, next: NextFunction) {
+    passport.authenticate("local", function (err, user, _info) {
       // no async/await because passport works only with callback ..
       if (err) return next(err);
       if (!user) {
@@ -33,6 +36,11 @@ export class UserController {
         res.status(200).send({ token: token });
       }
     });
+  }
+
+  public logoutUser(req: Request, res: Response, _next: NextFunction) {
+    req.logout();
+    res.status(200).send({ response: "logout Successfully" });
   }
 
 

@@ -15,8 +15,8 @@ export class ProductRoutes {
     }
 
     routes() {
-        this.router.get("/", this.productController.getProducts);
-        this.router.get("/:id", this.productController.getProduct);
+        this.router.get("/", this.authController.authenticateJWT, this.productController.getProducts);
+        this.router.get("/:id", this.authController.authenticateJWT, this.productController.getProduct);
         this.router.post("/", this.authController.authenticateJWT, this.productController.createProduct);
         this.router.put("/:id", this.authController.authenticateJWT, this.productController.updateProduct);
         this.router.delete("/:id", this.authController.authenticateJWT, this.productController.deleteProduct);

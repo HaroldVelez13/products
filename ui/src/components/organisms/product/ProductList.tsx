@@ -26,7 +26,7 @@ const Products = () => {
                     ? (
                         <div>Loading...</div>
                     )
-                    : list.map((product: IProduct) => <ProductItem key={"product" + product._id} product={product} />)
+                    : list.map((product: IProduct) => <ProductItem key={"product" + product.productId} product={product} />)
                 }
             </Row>
         </PageNoCenter>

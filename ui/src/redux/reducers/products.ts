@@ -1,5 +1,5 @@
 import { IProduct } from '../../common/interfaces/IProduct';
-import { Action, ActionType } from '../actionTypes/products';
+import { Action, ActionType } from '../actionTypes/getProducts';
 
 
 

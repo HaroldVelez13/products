@@ -3,7 +3,11 @@ export interface IAuth {
     password: string;
 }
 
-export interface IUser extends IAuth {
+export interface IUser {
+    username: string;
     email: string;
     phone?: string;
+    _id: string;
 }
+
+export type IToken = String

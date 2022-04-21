@@ -1,7 +1,6 @@
-
 import { Request, Response } from "express";
 import { IProduct, Product } from "../models/product";
-import crypto from 'crypto'
+import crypto from "crypto";
 
 export class ProductController {
 
@@ -20,8 +19,8 @@ export class ProductController {
     }
 
     public async createProduct(req: Request, res: Response): Promise<void> {
-        const product = req.body
-        product.productId = crypto.randomBytes(6).toString('hex');
+        const product = req.body;
+        product.productId = crypto.randomBytes(6).toString("hex");
         const newProduct: IProduct = new Product(product);
         const result = await newProduct.save();
         if (result === null) {

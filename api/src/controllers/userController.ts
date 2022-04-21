@@ -1,7 +1,6 @@
 import bcrypt from "bcrypt-nodejs";
 import { NextFunction, Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
-import passport from "passport";
 import "../auth/passportHandler";
 import { User } from "../models/user";
 import { JWT_SECRET } from "../util/secrets";
@@ -10,7 +9,7 @@ import { JWT_SECRET } from "../util/secrets";
 export class UserController {
 
   public async registerUser(req: Request, res: Response): Promise<void> {
-    const { username, password, email, phone } = req.body
+    const { username, password, email, phone } = req.body;
     const hashedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 
     await User.create({
@@ -20,23 +19,26 @@ export class UserController {
       password: hashedPassword,
 
     });
+    const user = await User.findOne({ password: hashedPassword });
 
     const token = jwt.sign({ username: username, scope: req.body.scope }, JWT_SECRET);
-    res.status(200).send({ token: token });
+    res.status(200).send({ token: token, user: user });
   }
 
-  public authenticateUser(_req: Request, res: Response, next: NextFunction) {
-
-    passport.authenticate("local", function (err, user, _info) {
-      // no async/await because passport works only with callback ..
-      if (err) return next(err);
-      if (!user) {
-        return res.status(401).json({ status: "error", code: "unauthorized" });
-      } else {
-        const token = jwt.sign({ username: user.username }, JWT_SECRET);
-        res.status(200).send({ token: token });
+  public async authenticateUser(req: Request, response: Response, next: NextFunction) {
+    console.log("authenticateUser");
+    const { username, password } = req.body;
+    const user = await User.findOne({ username: username });
+    const salt = bcrypt.genSaltSync(10);
+    await bcrypt.compare(password, user.password, function (err: any, res: any) {
+      if (err) {
+        return response.status(401).json({ status: "error", code: "unauthorized" });
       }
+      const token = jwt.sign({ username: user.username }, JWT_SECRET);
+      return response.status(200).send({ token: token, user: user });
+
     });
+
   }
 
   public logoutUser(req: Request, res: Response, _next: NextFunction) {

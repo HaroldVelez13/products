@@ -1,18 +1,29 @@
 import { Form, Input, Button } from 'antd';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useTypedSelector } from '../../../hooks/useTypeSelector';
+import { login } from '../../../redux/actionCreators/login';
 import AppCard from '../../atoms/AppCard/AppCard';
 import Page from '../../pages/Index';
 
 const LoginForm = () => {
     const navigate = useNavigate();
-    const onFinish = (values: any) => {
-        console.log('Success:', values);
-    };
 
-    const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
+    const { user, loading, error } = useTypedSelector((state) => state.auth);
+    const dispatch = useDispatch();
+
+    const onFinish = (values: any) => {
+        // @ts-ignore
+        dispatch(login(values))
     };
     const handleClick = () => navigate("/register")
+
+    useEffect(() => {
+        if (user._id && user._id !== "") {
+            navigate("/products")
+        }
+    }, [user])
 
     return (
         <Page>
@@ -22,7 +33,6 @@ const LoginForm = () => {
                     labelCol={{ span: 24 }}
                     wrapperCol={{ span: 24 }}
                     onFinish={onFinish}
-                    onFinishFailed={onFinishFailed}
                     autoComplete="off"
                 >
                     <Form.Item

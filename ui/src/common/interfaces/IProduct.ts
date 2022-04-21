@@ -1,5 +1,5 @@
 export interface IProduct {
-    _id?: String;
+    productId?: String;
     name: String;
     price: Number;
     quantity: Number;

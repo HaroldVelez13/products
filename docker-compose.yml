@@ -14,7 +14,7 @@ services:
         - "3000:3000"
       volumes:
         - ./api:/home/node/app
-      command: npm run start
+      command: npm run dev
       depends_on:
         - db_mongo
     ui:

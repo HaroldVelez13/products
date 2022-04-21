@@ -26,6 +26,7 @@ export class UserController {
   }
 
   public authenticateUser(_req: Request, res: Response, next: NextFunction) {
+
     passport.authenticate("local", function (err, user, _info) {
       // no async/await because passport works only with callback ..
       if (err) return next(err);

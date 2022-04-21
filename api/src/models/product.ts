@@ -1,14 +1,18 @@
 import { Document, Schema, Model, model } from "mongoose";
 
 export interface IProduct extends Document {
-  _id: String;
+  productId: String;
   name: String;
   price: Number;
   quantity: Number;
 }
 
 export const productSchema = new Schema({
-  _id: String,
+  productId: {
+    type: String,
+    required: true,
+    unique: true
+  },
   name: String,
   price: Number,
   quantity: Number

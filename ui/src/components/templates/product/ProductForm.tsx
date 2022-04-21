@@ -1,9 +1,10 @@
+import ProductForm from "../../organisms/product/ProductForm"
 
 
-const ProductForm = () => {
+const FormProduct = () => {
     return (
-        <div>ProductForm</div>
+        <ProductForm />
     )
 }
 
-export default ProductForm
+export default FormProduct
